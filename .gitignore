@@ -1,0 +1,42 @@
+# macOS
+
+.DS_Store
+
+# Windows
+
+Thumbs.db
+
+#VS Code
+
+.vscode/
+
+#JetBrains
+
+.idea/
+
+#Logs
+
+*.log
+
+#Temporary files
+
+*.tmp
+*.swp
+
+#Python
+
+pycache/
+*.pyc
+
+# Images generated during note-taking
+
+*.bak
+
+#PDFs and exports
+
+exports/
+
+#Environment files
+
+.env
+.env.*
