@@ -134,7 +134,139 @@
 The kubelet connects to container runtimes through a plugin interface called Container Runtime Interface (CRI).
 
 **Question: what is CRI mainly used for??**
-- 
+- mainly used by Kubernetes so that kubelet can talk to different container runtimes in a consistent way.
 
+---
+
+**Question: what is a CRI shim??**
+- a CRI shim is a compatible layer or adapter that allows kubelet to communicate with a container runtime using the CRI standard.
+
+**CRI-Containerd** allows containers to be directly created and managed with containerd at kubelet's request.
+
+**CRI-O** enables the use of any Open Container Initiative (OCI) compatible runtime with Kubernetes such as runC
+
+---
+
+**Question: what is a [proxy] kube-proxy??**
+- it is a network agent which runs on each node (control plane & workers) responsible for dynamic updates and maintainance of all network rules on the node [watches the Kubernete API for Service and Endpoint changes].
+- function: abstracting the details of Pods networking and forwarding connection requests to the containers in the Pods. 
+
+- TCP: HTTP, HTTPS, databases
+- UDP: DNS, streaming, gaming
+- SCTP: specialized telecom and networking applications
+
+> Scheduler chooses where Pods run; kubelet runs Pods; kube-proxy routes network to Pods.
+
+---
+
+**Question: what is the purpose of Kubernetes networking??**
+- solving communication problems:
+    1. container to container (inside a Pod)
+    2. pod to pod (inside a cluster)
+    3. service to pod (inside the cluster)
+    4. external user to service (outside the cluster)
+
+
+1. Container-to-Container communication inside a Pod
+- containers are normally isolated. when a container starts it gets its own: processes, filesystem, network stack. 
+- this isolation comes from Linux namespaces.
+
+**Question: what is network namespace made up of??**
+- IP addresses
+- routing tables
+- networking interfaces
+- ports
+
+- since containers are pretty much isolated and they cannot communicate via localhost, Kubernetes creates a **Pause Container** which essentially creates "Pod Network Namespace".
+    - containers inside this Pod can join the namespace allowing them to share the same IP address, network interfaces, and localhost. 
+
+---
+
+**Question: what Linux feature creates isolated network environments??**
+- Network namespaces
+
+---
+
+**Question: what special container creates the Pod's network namespaces??**
+- Pause Container
+
+---
+
+**Question: do containers inside the same Pod have different IP addresses??**
+- No. They share the Pod IP.
+
+---
+
+**Question: why can containers inside the same Pod communicate through localhost??**
+- because they share the same network namespace created by the Pause container. 
+
+---
+
+2. Pod-to-Pod Communication
+- every Pod must communicate directly with every other Pods. how do we achieve this??
+- using "Kubernetes Network Model". Pods are treated as virtual machines (VMs) which allows every Pod to get its own IP address, thus making communication easier as Pod A can communicate with Pod B directly using IP addresses. 
+
+- NOTE: we don't use NAT (Network Address Translation) because it changes addresses during transmission. 
+- without NAT:
+    - simpler routing, better observability, and easier troubleshooting. 
+
+> every Pod IP should be routable throughout the cluster.
+
+
+**Question: what networking model does Kubernetes use??**
+- IP-per-Pod
+
+
+**Question: what is a fundamental Kubernetes networking requirement??**
+- all Pods must be able to communicate with all other Pods without NAT
+
+
+**Question: Kubernetes treats Pods similarly to what infrastructure component??**
+- virtual machines (VMs)
+
+---
+
+3. What is CNI?
+- is a standard that networking plugins follow.
+- examples: calico, flannel, cilium etc
+
+
+**Question: what is the pupose of CNI??**
+- to provide a standard interface for configuring container networking and assigning Pod IP addresses.
+
+---
+
+4. Service-to-Pod communication
+
+
+**Question: why do Services exist??**
+- Pods are ephemeral and their IPs can change
+
+**Question: what does a Service provide??**
+- stable network endpoint and load balancing.
+
+**Question: which component forwards Service traffic to Pods??**
+- kube-proxy
+
+---
+
+5. External-to-Service communication
+
+- tools used to communicate with the Kubernetes application from the user side:
+    - NodePort
+    - LoadBalancer
+    - Ingress
+
+
+**Question: which Kubernetes object typically provides HTTP routing into a cluster??**
+- Ingress
+
+
+**Question: which Service type exposes an application on every node's port??**
+- NodePort
+
+
+**Question: which Service type integrates with cloud load balancers??**
+- LoadBalancer
 
 ---
