@@ -147,6 +147,12 @@ The kubelet connects to container runtimes through a plugin interface called Con
 
 ---
 
+**Question: which part of the Container Runtime Interface (CRI)specification is containerd primarily responsible for implementing??**
+- low-level container execution and lifecycle management
+    - containerd is a core container runtime that manages the complete container lifecycle on a single host - image transfer, storage, container execution, supervision, and network attachements. 
+
+--
+
 **Question: what is a [proxy] kube-proxy??**
 - it is a network agent which runs on each node (control plane & workers) responsible for dynamic updates and maintainance of all network rules on the node [watches the Kubernete API for Service and Endpoint changes].
 - function: abstracting the details of Pods networking and forwarding connection requests to the containers in the Pods. 
