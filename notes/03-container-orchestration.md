@@ -115,3 +115,14 @@ Why do we need a lot of containers for enterprise applications??
 
 ---
 
+**Question: which Kubernetes API object is used to manage external access to services in a cluster, typically HTTP/S?**
+- Ingress
+    - Ingress provides HTTP/S routing rules to manage external users' access to services within the cluster based on hostnames or paths.
+
+---
+
+**Question: which Kubernetes object defines rules about how Pods are allowed to communicate with each other and network endpoints?**
+- NetworkPolicy
+    - NetworkPolicies allow specifying traffic flow rules at the IP address or port level (OSI layer 3 or 4).
+
+---
