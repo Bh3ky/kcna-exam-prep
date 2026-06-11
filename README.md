@@ -34,4 +34,4 @@ This repository serves as a personal knowledge base and revision guide while pre
 
 ## License
 
-This repository is intended for educational and personal learning purposes..
+This repository is intended for educational and personal learning purposes.
