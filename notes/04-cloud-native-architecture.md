@@ -41,3 +41,10 @@
 - scaling inefficiencies
 - greater risk when making changes
 
+
+**Question: what are some of the benefits that microservice architecture offers??**
+- independent scaling
+- faster deployment per service
+- better fault isolation
+- team autonomy
+
