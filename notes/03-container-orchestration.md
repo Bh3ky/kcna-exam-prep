@@ -126,3 +126,41 @@ Why do we need a lot of containers for enterprise applications??
     - NetworkPolicies allow specifying traffic flow rules at the IP address or port level (OSI layer 3 or 4).
 
 ---
+
+## Containers Basics
+
+- before containers existed, `chroot` was one of the earliest ways to isolate applications. 
+
+**Question: what is chroot jail??**
+- is a restricted environment that simulates a new root directory. within this jail, a process can only access in its assigned directory, effectively isolating it from the rest of the system while the files remain physically present. 
+
+### `namespaces` and `cgroups`
+
+- **namespaces** are used to isolate various resources e.g., the network
+- a **network namespace** can be used to provide a complete abstraction of network interfaces and routing tables to allow a process to have its own IP address.
+- Linux Kernel 5.6 currently provides eight namespaces:
+
+1. `pid` - process ID which provides a process with its own set of process IDs
+
+2. `net` - network allows the processes to have their own network stack, including the IP address.
+
+3. `mnt` - mount abstracts the filesystem view and manages mount points.
+
+4. `ipc` - inter-process communication provides separation of named shared memory segments.
+
+5. `user` - provides the process with their own set of user IDs and group IDs.
+
+6. `uts` - Unix time sharing allows processes to have their own hostname and domain name.
+
+7. `cgroup` - a newer namespace that allows a process to have its own set of cgroup root directories.
+
+8. `time` - the newest namespace can be used to virtualise the clock of the system
+
+
+- cgroups are used to organise processes into hierachical groups and to assign them resources like memory and CPU
+
+
+**Question: what is the difference between virtual machines and containers??**
+- VMs emulate a complete machine which includes the OS and a kernel, while containers share the host machine's kernel and other isolated processes.
+
+---
