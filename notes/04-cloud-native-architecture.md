@@ -238,3 +238,72 @@ Question: server upgraded from 4 CPUs to 16 CPUs. which scaling??
 
 ---
 
+## Serverless
+
+**Question: what is serverless computing??**
+- serverless computing is an application development model that allows developers to build, deploy and run applications without managing servers or back-end infrastructure.
+
+**Questio: what is Function as a Service (FaaS)??**
+- Function as a service (FaaS) is a cloud computing model where one develop small, modular pieces of code called functions, and a cloud provider executes them in response to specific events.
+
+- container images are a great standardised way of packaging software for FaaS. 
+- CloudEvents = specification for commonly describing event data.
+    - OR an open-source specification created by the Cloud Native Computing Foundation (CNCF) designed to standardize how event data is described and transmitted across different cloud services, platforms, and programming languages
+- NB: events are the basis for scaling serverless workloads or triggering corresponding functions. 
+
+**Question: what are the advantages of serverless computing??**
+- lower cost
+- simplified scalability
+- simplified backend code
+- quicker turnaround
+
+**Question: how does serverless compare to other cloud backend models??**
+- Backend-as-a-Service (BaaS) - service model where cloud provider offers backend services such as data storage, so that developers can focus on writing front-end code.
+- Platform-as-a-Service (PaaS)- model where developers essentially rent all the necessary tools to develop and deploy applications from a cloud provider, including things like OS and middleware.
+- Infrastructure-a-a-Service (IaaS) - catch all term for cloud vendors hosting infra on behalf of their customers. NB: IaaS providers might offer serverless functionality.
+
+- serverless computing addresses backend services and handle server-side logic, data processing, and infra management that users don't directly use. 
+
+**Question: what is edge computing, and how does it relate to serverless computing??**
+- edge computing in serverless means that functions can be deployed closer to end users, reducing latency and improving application performance. 
+
+**Question: what is cold start mitigation in serverless platforms??**
+- cold start mitigation refers to techniques that reduce the delay when starting dormant serverless functions.
+- serverless providers with cold start mitigation features in place spin up functions at the edge in advance, helping to eliminate delays in execution. 
+
+---
+
+## Open Standards
+
+- image-spec - defines how to build and package container images
+- runtime-spec - specifies the configuration, execution environment, and lifecycle of containers.
+- distribution-spec - provides a standard for distributing content, including container images. 
+
+1. OCI Spec - image, runtime, distribution specification on how to run, build, and distribute containers
+
+2. Container Network Interface (CNI) - specification on how to implement networking for Linux containers. defines how container runtimes and orchestrators (such as Kubernetes) should assign IP addresses, connect containers to networks, and remove network configurations when containers terminate.
+
+3. Container Runtime Interface (CRI) - is a Kubernetes API that allows Kubernetes to communicate with different container runtimes e.g., containerd, CRI-O.
+
+4. Container Storage Interface (CSI) - is a standard for exposing storage systems to container orchestration platforms. OR specification for integrating storage systems with container orchestration platforms such as Kubernetes. 
+
+5. Service Mesh Interface (SMI) - specification that provides a standard interface for service mesh capabilities. focuses on traffic policies, traffic splitting, access control, observability. 
+    - specification that standardises how service meshes expose common functionality to Kubernetes users and tools. 
+
+**Question: which specification handles container networking??**
+- container network interface (CNI)
+
+**Question: which specification allows Kubernetes to work with different runtimes??**
+- container runtime interface (CRI)
+
+**Question: which specification allows Kubernetes to work with different storage systems??**
+- container storage interface (CSI)
+
+**Question: which specification standardizes container images and runtimes??**
+- OCI
+
+**Question: which specification standardizes service mesh capabilities??**
+- service mesh interfaces (SMI)
+
+---
+
