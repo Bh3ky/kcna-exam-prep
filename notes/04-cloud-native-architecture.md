@@ -307,3 +307,12 @@ Question: server upgraded from 4 CPUs to 16 CPUs. which scaling??
 
 ---
 
+## Cloud Native Roles & Site Reliability Engineering
+
+- Site Reliability Engineering uses three main metrics:
+
+1. **Service Level Objectives (SLO)** - specify a target level for the reliability of the service e.g., reaching a service latency of less than 100ms.
+
+2. **Service Level Indicators (SLI)** - carefully defined quantitative measure of some aspect of level of service that is provided e.g., how long a request actually needs to be answered.
+
+3. **Service Level Agreements (SLA)** - an explicit or implicit contract with the users that include consequences of meeting or missing the SLOs they contain. 
