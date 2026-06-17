@@ -321,3 +321,23 @@ Cloud / Datacenter
 ---
 
 ## Container Orchestration Fundamentals
+
+- container orchestration systems typically have two main components:
+    1. control plane - manages the cluster and container operations
+    2. workers node - run the containers
+
+- Kubernetes has emerged as the standard container orchestration **offering powerful, flexible, and scalable management for containerized applications**.**
+
+- container orchestration system allows for the creation of cluster of multiple servers and running of containers across them efficiently. 
+
+What are the advantages of such a system??
+- provide compute resources
+- schedule containers to servers in an efficient way
+- allocate resources like CPU and memory to containers
+- manage the availability of containers and replace them if they fail
+- scale containers if the load increases
+- provide networking to connect containers
+- provision storage if containers need to persist data
+
+---
+
