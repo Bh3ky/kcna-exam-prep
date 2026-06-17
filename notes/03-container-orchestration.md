@@ -244,3 +244,80 @@ Container
 
 **Question: True/False, does Kubernetes build container images??**
 - False. Kubernetes pulls images from registries and runs containers from them. 
+
+---
+
+## Security
+
+**Question: what are the 4Cs of Cloud Native Security??**
+1. Code at the core - application code
+2. Container - container images
+3. Cluster - Kubernetes clusters
+4. Cloud/Datacenter - underlying cloud or datacenter
+
+- Containers provide **process isolation**, but they are **not security boundaries in the same way VMs are**. if a container is misconfigured, an attacker may:
+    - access sensitive files
+    - escalate privileges
+    - escape the container
+    - move laterally through the cluster
+    - access Kubernetes APIs
+
+- cloud-native security focuses on multiple layers of protection. 
+
+What is Root?
+- root is the superuser with full control.
+
+- to prevent anyone from gaining access and running the application from the root, we create a non-root permissions:
+
+```dockerfile
+RUN useradd appuser
+
+USER appuser
+```
+
+- the application now runs with limited permissions. 
+
+- in Kubernetes we can enforce these layered permissions through the commands:
+
+```YAML
+securityContext:
+    runAsNonRoot: true
+```
+- this tells Kubernetes not to start the container if it tries to run as root.
+
+
+- use of public images poses security risks. always use trusted images from official publishers.
+
+
+**The 4Cs of Cloud Native Security**
+- security must be applied at every layer, not just one layer.
+
+```text
+Cloud / Datacenter
+        ↓
+     Cluster
+        ↓
+    Container
+        ↓
+       Code
+```
+
+1. Code
+- this is the application source code
+
+2. Container
+- focuses on the container image
+
+3. Cluster
+- Kubernetes clusters
+- typical cluster controls:
+    - RBAC [Role-Based Access Control]
+    - Network Policies (control pod-to-pod communication)
+    - Admission Controllers (validate resources before they enter the cluster)
+
+4. Cloud / Datacenter
+- the outermost layer which includes physical servers, VMs, storage, networks, cloud infra etc
+
+---
+
+## Container Orchestration Fundamentals
