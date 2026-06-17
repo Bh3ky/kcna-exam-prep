@@ -463,3 +463,70 @@ Container
 
 **Question: what is mounted into a container when using a volume??**
 - a directory or storage resource that exist outside the container filesystem. 
+
+---
+
+**Question: what Kubernetes object represents a piece of storage in the cluster, provisioned by an administrator or dynamically??**
+- PersistentVolume (PV)
+    - A PersistentVolume (PV) is a piece of storage provisioned for use in the cluster, independent of any individual Pod.
+
+**Question: what fundamental problem does a Service Mesh like Istio or Linkerd aim to solve in a microservices architecture??**
+- managing and observing inter-service communication
+    - Service meshes provide a dedicated infrastructure layer for handling service-to-service communication, offering features 1 like traffic management, security (mTLS), and observability (metrics, traces) without requiring changes to application code.
+
+**Question: why is container orchestration essential for managing microservices at scale??**
+- handles service discovery, scaling, and fault tolerance
+    - orchestrators like Kubernetes automate complex tasks like service discovery, load balancing, scaling based on demand, and self-healing, which are crucial for managing a distributed microservices architecture.
+
+**Question: which security mechanism in Kubernetes is best suited for providing an identity to processes running in Pods to interact with the API server??**
+- ServiceAccount
+    - ServiceAccounts provide an identity for processes that run in a Pod, which can then be granted permissions to API resources via RBAC Roles and RoleBindings.
+
+**Question: in the context of container security, what does "least privilege" primarily refer to??**
+- granting containers only the permissions they absolutely need
+    - The principle of least privilege means that containers (and their processes) should run with only the capabilities and permissions essential for their function, reducing the potential impact of a compromise.
+
+**Question: what is the function of a NetworkPolicy in Kubernetes??**
+- to define how Pods are allowed to communicate with each other 
+    - NetworkPolicy resources specify how groups of Pods are allowed to communicate with each other and other network endpoints, acting as a firewall at the Pod level.
+
+**Question: what is the function of a StorageClass in Kubernetes??**
+- to define types of storage
+    - StorageClasses allow administrators to define different "classes" of storage (e.g., 'fast-ssd', 'cheap-hdd') for dynamic provisioning.
+
+**Question: what is the role of an "Ingress Controller" in a Kubernetes cluster??**
+- implements rules defined in Ingress resources
+    - An Ingress resource defines HTTP/S routing rules, but an Ingress Controller (e.g., Nginx, Traefik) is the actual reverse proxy/load balancer that reads these rules and routes external traffic accordingly.
+
+**Question: which part of the Container Runtime Interface (CRI) specification is containerd primarily responsible for implementing??**
+- low-level container execution and lifecycle management
+    - containerd is a core container runtime that manages the complete container lifecycle on a single host – image transfer, storage, container execution, supervision, and network attachments.
+
+**Question: how can you securely store sensitive information like passwords or API keys in Kubernetes??**
+- secret
+
+**Question: a stateful application requires storage that persists even if its Pod is rescheduled to another Node. Which Kubernetes objects are essential for this??**
+- PersistentVolume (PV) and PersistentVolumeClaim (PVC)
+    - A PersistentVolume (PV) represents a piece of storage, and a PersistentVolumeClaim (PVC) is a request for that storage by a user/Pod. This decoupling allows storage to outlive Pods.
+
+**Question: what is the core difference between "authentication" and "authorization" in Kubernetes security??**
+- authentification verifies identity, while authorization verifies permissions. 
+
+**Question: what is the main purpose of a ServiceAccount in Kubernetes when interacting with the API server??**
+- ServiceAccounts provide an identity for processes running within Pods. This identity can be used to authenticate to the Kubernetes API server, and RBAC rules can grant it specific permissions.
+
+**Question: in Kubernetes, what is the primary role of Role-Based Access Control (RBAC)??**
+- RBAC regulates access to Kubernetes API resources based on the roles of individual users or service accounts within the cluster, ensuring users only perform actions they are authorized for.
+
+**Question: which Kubernetes API object is used to manage external access to services in a cluster, typically HTTP/S??**
+- ingress
+    - ingress provides HTTP/S routing rules to manage external users' access to services within the cluster based on hostnames or paths.
+
+**Question: what is the primary function of kube-proxy when a Service of type ClusterIP is created??**
+- it modifies iptables or IPVS route on nodes to route traffic
+    - kube-proxy watches the API server for new Services and Endpoints. For ClusterIP Services, it configures network rules (e.g., iptables, IPVS) on each node to capture traffic destined for the Service's IP and load balance it to the backend Pods.
+
+**Question: in Kubernetes RBAC (Role-Based Access Control), what defines a set of permissions??**
+- role / clusterrole
+    - A Role (namespace-scoped) or ClusterRole (cluster-scoped) contains rules that represent a set of permissions on resources.
+
