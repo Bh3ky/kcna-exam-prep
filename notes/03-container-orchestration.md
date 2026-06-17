@@ -341,3 +341,125 @@ What are the advantages of such a system??
 
 ---
 
+## Networking
+
+**Question: how does microservice architecture manage its network communication??**
+- through network namespaces which give each container its own IP address thereby allowing multiple containers to use the same port
+
+**Question: can you explain where an overlay network is used??**
+- overlay networked is used for communication between containers on different hosts. this virtual network spans multiple hosts, enabling seamless container-to-container communication without requiring complex manual networking setup. 
+
+> overlay networks also handle IP address management, automatically assigning addresses and routing efficiently.
+
+**Question: what is Container Network Interface (CNI)??**
+- is a standardized framework used by container runtimes (like Kubernetes) to connect containerized applications to networks. 
+
+---
+
+## Service Discovery & DNS
+
+**Question: what is service registry??**
+- it is a system that automatically tracks and updates information about running services which enables service discovery thereby allowing containers to fin and communicate with each other dynamically without manual configuration. 
+
+1. DNS - modern DNS servers with service APIs can automatically register new services as they are created.
+2. Key-Value-Store - another common approach is to use a strongly consistent datastore to manage service information. these systems **provide high availability and robust failover capabilities** e.g., cluster options: etcd, Consul or Apache Zookeeper. 
+
+---
+
+### Service Mesh
+
+**What is a service mesh??**
+- it is a dedicated infrastructure layer that manages service-to-service communication using proxies.
+
+
+- a service mesh takes the proxy idea and applies it everywhere.
+- the proxies handle all network communication between services, abstracting away complexity from application code. 
+
+**mTLS (Mutual TLS)**
+- basically, applications are not exposed to the encryption since the proxies handle it automatically. 
+
+**Question: what is data plane in service mesh??**
+- this is where traffic policies and rules are enforced.
+
+- control plane centrally manages and distributes these rules, defining how traffic flows e.g., ensuring that Service A and Service B always communicate over encrypted channels. 
+
+```text
+                Control Plane
+                      │
+      ┌───────────────┼───────────────┐
+      ▼               ▼               ▼
+   Proxy A         Proxy B         Proxy C
+```
+
+- with control plane:
+
+```YAML
+mtls: enabled
+```
+- the control plane distributes the rule to all proxies.
+
+**Sidecar Pattern**
+- the lightweight proxy is usually deployed as a sidecar container. since a Pod can contain multiple containers:
+
+```text
+Pod
+├── Application Container
+└── Proxy Container
+```
+
+- two popular service meshes are Istio and Linkerd. 
+
+**Question: what is a sidecar proxy??**
+- a lightweight proxy container deployed alongside an application container.
+
+- common capabilities provided by service meshes:
+    - Encryption (mTLS)
+    - Authentication
+    - Authorization
+    - Traffic routing
+    - Load balancing
+    - Observability
+    - Metrics collection
+    - Retries
+
+**Question: in a service mesh, what components make up the data plane??**
+- the proxies handling service-to-service
+
+**Question: which component actually processes network traffic??**
+- data plane
+
+**Question: which component distributes traffic policies and configuration??**
+- control plane
+
+---
+
+## Storage
+
+- container images are **read-only and consist of different layers that include everything that is added during the building phase**. 
+
+> containers are designed to be ephemeral (temporary).
+
+**Question: why are container images read-only??**
+- ensures every container starts with the same filesystem which guarantees:
+    - predictability
+    - reproducibility
+    - portability
+
+**Read-Write Layer**
+- the read-write (or writable) layer in a container allows the container runtime to make file modifications, create new files, and write logs during runtime. Siting on top of immutable image layers, it ensures the base operating system and dependencies remain untouched, enabling multiple containers to run safely and efficiently off the exact same image.
+
+**Question: what is a volume??**
+- a volume is storage that exists independently of the container (persistent storage outside the container). 
+
+```text
+Container
+     │
+     ▼
+ Volume
+```
+
+**Question: what is the primary purpose of a Persistent Volume in Kubernetes??**
+- to provide persistent storage independent of the pod lifecycle. 
+
+**Question: what is mounted into a container when using a volume??**
+- a directory or storage resource that exist outside the container filesystem. 
