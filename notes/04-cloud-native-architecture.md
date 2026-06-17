@@ -316,3 +316,59 @@ Question: server upgraded from 4 CPUs to 16 CPUs. which scaling??
 2. **Service Level Indicators (SLI)** - carefully defined quantitative measure of some aspect of level of service that is provided e.g., how long a request actually needs to be answered.
 
 3. **Service Level Agreements (SLA)** - an explicit or implicit contract with the users that include consequences of meeting or missing the SLOs they contain. 
+
+---
+
+**Question: what is the primary goal of the CNCF's "Trail Map" for cloud native adoption??**
+- to offer a recommended journer and project choices for adopters. 
+    - the CNCF Trail Map suggests a path for organizations adopting cloud native technologies, highlighting CNCF projects that can help at different stages (e.g., containerization, CI/CD, orchestration, observability).
+
+**Question: how does Serverless (e.g., FaaS like AWS Lambda or Knative Serving) primarily differ from traditional PaaS offerings??**
+- serverless abstracts away all underlying server management (Serverless computing (especially FaaS) aims to abstract away all infrastructure management, including servers, OS, and runtimes, allowing developers to focus solely on writing code that executes in response to events). 
+
+**Question: in a typical cloud native environment, which persona is primarily responsible for designing and building the application??**
+- Developer
+
+**Question: what is the primary motivation behind using "Serverless Functions" (FaaS)??**
+- to execute event-driven code without managing the infrastructure.
+    - Serverless functions are designed for short-lived, event-driven computations where the underlying infrastructure (servers, OS) is completely managed by the platform, allowing developers to focus on code.
+
+**Question: what is the benefit of using open standards in cloud native technologies??**
+- for interoperability and portability
+    - open standards (like OCI, CRI, CNI) ensure that different tools and platforms can work together, preventing vendor lock-in.
+
+**Question: what is the primary role of the Cloud Native Computing Foundation (CNCF) in the Kubernetes ecosystem??**
+- to foster and sustain an ecosystem of open source projects
+    - the CNCF hosts and promotes a wide range of open source projects (including Kubernetes, Prometheus, Envoy) to advance cloud native computing, providing governance, support, and community building.
+
+**Question: what term describes an architectural approach where applications are built as small, independent services that run in their own processes??**
+- microservices
+
+**Question: what does "Serverless" computing primarily abstract away from the developer??**
+- server management
+    - Serverless platforms (like FaaS) manage the underlying infrastructure, allowing developers to focus solely on code execution.
+
+**Question: which of the following is NOT a core characteristic of cloud native architectures??**
+- monolithic application design
+    - Cloud native architectures typically favor microservices, containers, dynamic orchestration (like Kubernetes), and DevOps/Agile practices, moving away from large, tightly coupled monolithic designs.
+
+**Question: what is the primary goal of Horizontal Pod Autoscaling (HPA) in Kubernetes??**
+- to adjust the number of Pod replicas based on metrics
+    - HPA automatically scales the number of Pod replicas in a workload resource (like a Deployment or StatefulSet) up or down based on observed CPU utilization, custom metrics, or external metrics.
+
+**Question: what is a primary characteristic of Vertical Pod Autoscaling (VPA)??**
+- it adjusts the CPU and memory requests and limits for Pods
+    - VPA recommends or automatically updates the resource requests and limits for containers within Pods to match actual usage, helping to optimize resource allocation. It does not change the number of replicas (that's HPA).
+
+**Question: why are Open Standards, like those defined by the Open Container Initiative (OCI), critical for the cloud native ecosystem??**
+- they promote interoperability and prevent vendor lock-in
+    - Open standards (e.g., OCI for container formats/runtimes, CNI for networking, CRI for runtimes) ensure that different tools and platforms can work together seamlessly, giving users choice and preventing vendor lock-in.
+
+**Question: which persona is typically focused on the reliability, scalability, and maintenance of the underlying Kubernetes platform??**
+- platform operator / SRE
+
+**Question: which mechanism allows Kubernetes to automatically adjust the number of Pods in a Deployment based on CPU utilization or custom metrics??**
+- horizontal pod autoscaler (HPA)
+
+**Question: what is the primary goal of the Cluster Autoscaler??**
+- The Cluster Autoscaler adjusts the number of Nodes in the cluster based on pending Pods that cannot be scheduled due to resource limits.
