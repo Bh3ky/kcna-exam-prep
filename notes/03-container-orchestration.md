@@ -164,3 +164,83 @@ Why do we need a lot of containers for enterprise applications??
 - VMs emulate a complete machine which includes the OS and a kernel, while containers share the host machine's kernel and other isolated processes.
 
 ---
+
+## Running Containers
+
+- to run industry-standard containers, follow the OCI [runtime-spec] standard.
+- runC is a low-level runtime that is used in a variety of tools to start containers, including Docker
+
+
+**Question: can you write the Docker command used to start containers??**
+
+```bash
+docker run nginx
+```
+
+---
+
+## Building Container Images
+
+**Question: what is a Docker container image??**
+- Docker container image is a lightweight, standalone, executable package of software that includes everything needed to run an application: code, runtime, system tools, system libraries, and settings. 
+
+**Question: list three things that make up an image??**
+1. layer containing files
+2. image index with metadata describing the target platform
+3. config file specifying the container's execution command
+
+**Question: what is a Dockerfile??**
+- a dockerfile provides the instructions for how to build container image with Docker. it includes all the commands users can make in the container.
+
+**Note**: an image is a blueprint or a template. it contains the application code, libraries, dependencies, runtime, configuration e.g., `nginx:latest`, `ubuntu:24.04`, `python:3.12`. the image itself doesn't run
+a container is a running instance of an image
+
+- Docker uses the layer caching technique which makes builds faster, smaller, and more efficient
+
+**Question: what is a container registry??**
+- a registry stores images. 
+    - repository used to store and distribute container images.
+
+- a layer is a filesystem change created by Dockerfile instruction. 
+
+```text
+Dockerfile
+    ↓
+Build
+    ↓
+Image
+    ↓
+Push
+    ↓
+Registry
+    ↓
+Pull
+    ↓
+Kubernetes
+    ↓
+Container
+```
+
+**Question: what file is used to define how a container image is built??**
+- a Dockerfile
+
+**Question: what does the `COPY` instruction do??**
+- copies files from the host into the image
+
+**Question: what does the `FROM` instruction do??**
+- specifies the base image
+
+**Question: what does `WORKDIR` do??**
+- sets the working directory for subsequent instructions
+
+**Question: what does `CMD` specify??**
+- the default command executed when the container starts
+
+**Question: what command uploads an image to a registry??**
+- `docker push`
+
+**Question: what command downloads an image from a registry??**
+- `docker pull`
+
+**Question: True/False, does Kubernetes build container images??**
+- False. Kubernetes pulls images from registries and runs containers from them. 
