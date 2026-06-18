@@ -434,3 +434,56 @@ The kubelet connects to container runtimes through a plugin interface called Con
 - LoadBalancer
 
 ---
+
+## Kubernetes API
+
+**Question: what is Kubernetes API??**
+- it is the central component of a Kubernetes cluster responsible for enabling all communication with the cluster. every user, tool, and internal component relies on the API server to interact with and manage the system.
+
+
+**Question: what are the three stages of processing requests in Kubernetes??**
+1. authentication
+2. authorisation
+3. admission control
+
+- Service Accounts - responsible for authenticating workloads
+
+**Question: explain how containers run on Kubernetes??**
+- in the container creation workflow, the kubelet first interacts with the containerd through the CRI, and in turn containerd launches containers using an OCI-compliant runtime.
+
+---
+
+## Networking
+
+- h
+---
+
+### Revision Questions
+
+**Question: which architectural component ensures that the actual state of cluster resources converges towards the desired state defined in their specifications??**
+- kub-controller.
+- controllers implement reconciliation loops. They watch the desired state via the API server and interact with resources to make the current state match the desired state (e.g., ReplicaSet controller ensuring
+the right number of Pods exist).
+
+**Question: A Pod specification includes two containers: one web server and one log shipper. How do these containers communicate efficiently over the network within the Pod??**
+- containers within the same Pod share the same network namespace, meaning they can communicate using localhost and standard inter-process communication mechanisms as if they were on the same machine.
+
+**Question: what is the primary role of kubelet on a worker node??**
+- the kubelet is the primary node agent. it receives PodSpecs from the API server and interacts with the container runtime (e.g., containerd) to start, stop, and manage the containers defined in those Pods, reporting their status back to the control plane.
+
+**Question: which Kubernetes resource provides a mechanism for grouping API objects and providing a scope for names??**
+- Namespaces create logical partitions within a cluster, allowing teams or applications to operate independently. Resource names must be unique within a Namespace, but not necessarily across the entire cluster. 
+
+**Question: when interacting with the Kubernetes API server using kubectl,what is the typical format used for defining resource manifests??**
+- while the API server can accept JSON, YAML is the overwhelmingly conventional and human-readable format used in configuration files (manifests) passed to kubectl for creating or updating resources.
+
+**Question: what core Kubernetes concept allows Deployments to perform rolling updates with zero downtime??**
+- Deployments manage ReplicaSets. During a rolling update, a Deployment creates a new ReplicaSet with the updated Pod template and gradually scales it up while scaling down the old ReplicaSet, ensuring service availability throughout the process.
+
+**Question: which component is responsible for making the ultimate decision about which node a newly created Pod should run on??**
+- The kube-scheduler watches for Pods without an assigned node and selects the most suitable node based on filtering (resource requests, affinity rules, etc.) and scoring algorithms.
+
+**Question: how does Kubernetes typically handle the failure of a container within a Pod??**
+-  The kubelet monitors container health. If a container fails, the kubelet restarts it according to the Pod’s restartPolicy (Always, OnFailure, Never). The Pod itself continues to exist on the same node.
+
+**Question: 
