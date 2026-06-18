@@ -455,7 +455,57 @@ The kubelet connects to container runtimes through a plugin interface called Con
 
 ## Networking
 
-- h
+**Question: list four communication paths for Kubernetes??**
+1. container-to-container communication
+2. pod-to-pod communication
+3. pod-to-service communication
+4. external-to-service communication
+
+**Container-to-Container Communication**
+- containers inside the same Pod share the **same network namespace**.
+- they share: IP address, network interfaces, port space
+- containers can communicate using `localhost` or `127.0.0.1`.
+
+**Pod-to-Pod Communication**
+- Pods musy be able to communicate directly with other Pods, regardless of which node they run on. 
+- Pod A should be able to send packets directly to Pod B, usually implemented by a CNI plugin such as Calico, Cilium, Weave Net etc..
+    - implemented by cluster's CNI network plugin, which may use overlay networking or routing-based networking. 
+
+**Pod-to-Service Communication**
+- a Pod usually talks to a Service instead of directly talking to another Pod. 
+- why??? the service provides stable IP, stable DNS name, and load balancing. this is typically implemented using kube-proxy, iptables, IPVS, or eBPF mechanisms.
+
+**External-to-Service Communication**
+- traffic originating outside the cluster reaches Services through mechanisms such as NodePort, LoadBalancer, and Ingress
+- traffic is then routed to the appropriate Pods.
+
+**Question: what are the core Kubernetes networking requirements??**
+- every Pod can communicate with every other Pod even when running on different nodes.
+- every Node can communicate with every Pod. this allows components such as kubelet, monitoring agents, control plane components to reach Pods when necessary
+- no NAT between Pods
+
+
+- every Pod gets its own unique IP address. 
+- most Kubernetes clusters run CoreDNS which provides **service discovery, name resolution** i.e., the ability to convert names into IP addresses (which allows application to remain independent of changing IP addresses).
+
+**Question: what are Network Policies??**
+- these are internal firewalls for the cluster which let's define which Pods or namespaces can communicate by using label selectors & also include IP-based rules using CIDR ranges.
+- NB: network policies are enforced by the cluster's network plugin [CNI]
+- also they **control traffic**. 
+
+**Question: compare the roles of kube-proxy and CNI plugin??**
+- CNI plugin creates and manages cluster networking (Pod IPs, routing, connectivity), while kube-proxy implements Service networking and load balancing to Pods. 
+
+---
+
+## Scheduling
+
+**Question: what is scheduling??**
+- scheduling refers to the process of automatically selecting the most appropriate worker node on which to run a containerized workload. 
+
+- kube-scheduler is responsible for making scheduling decisions.
+- because Kubernetes use a declarative model, the Pod is first defined, and then the scheduler decides which node it should run on. the kubelet on that node, along with the container runtime handles actually starting the containers.
+
 ---
 
 ### Revision Questions
