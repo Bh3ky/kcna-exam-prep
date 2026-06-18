@@ -16,9 +16,10 @@
 **Question: describe the different components of the control plane??**
 - the control plabe is the brian behind all the  operations inside the cluster. it made up of the following components:
 1. API server (`kube-apiserver`) - is the entry point for all commands and communicates with all other components. 
-2. scheduler (`kube-scheduler`) - assigns new workload objects such as pods encapsulating containers to noes (typically worker nodes). also considers resources, constraints, policies etc. 
-3. controller manager (`kube-controller-manager`) - maintains the desired state e.g, ensures correct number of pods running.
+2. scheduler (`kube-scheduler`) - assigns new workload objects such as pods encapsulating containers to nodes (typically worker nodes). also considers resources, constraints, policies etc. 
+3. controller manager (`kube-controller-manager`) - maintains the desired state of the cluster e.g, ensures correct number of pods running.
 4. etcd - distributed key-value store. stores all cluster data (configuration, state). 
+5. cloud-controller-manager (optional) - used to interact with API of cloud providers, to create external resources like load balancers, storage or security groups
 
 
 **Question: what is the function of the API server??**
@@ -49,7 +50,7 @@
 - is a distributed key-value data store used to persist a Kubernetes cluster's state.
 
 **Question: how does etcd work??**
-- by writting new data to the data store only by appending it. data is nenver replaced in the data store.
+- by writting new data to the data store only by appending it. data is never replaced in the data store.
 - obsolete data is compacted (or shredded) periodically to mimimise the size of the data store.
 
 - NOTE: etcd is used to store configuration details (such as subnets, ConfigMaps, Secrets etc).
@@ -79,6 +80,12 @@
 3. kubelet - CRI shims
 4. Proxy (kube-proxy)
 
+- **container runtime** is responsible for running containers on the worker node e.g., containerd
+
+- **kubelet** is a small agent that runs on every worker node in the cluster. the kubelet talks to the api-server and container runtime to handle the final stage of starting containers.
+
+- **kube-proxy** is a network proxy that handles inside and outside communication of the cluster. instead of managing traffic flow on its own, the kube-proxy tries to rely on the networking capabilities of underlying operating system.
+
 ---
 
 **Question: what is a worker node??**
@@ -94,9 +101,125 @@
 
 > The Control Plane makes decisions, but the Worker Node does the execution.
 
+- **Kubernetes namespaces** allow us to **organise cluster into logical groups**, which makes it **easier to support multi-tenancy when multiple teams share the same cluster**.
+
+**What Do Namespaces Do??**
+- resource organization (group related resource together).
+- name isolation (resource names only need to be unique within a namespace e.g., `production/frontend`, `development/production`). 
+- access control (RBAC) (allow administrators to control who can access what). 
+- resource quotas (can limit how much CPU, memory, and storage a namespace can consume).
+- environment separation (allow the same application to run in multiple environments inside the same cluster). 
+
+**Default Namespaces**
+
+1. default - which is the namespace where resources are created if no specifications are made
+
+```bash
+kubectl get pods
+```
+
+2. kube-system - contains Kubernetes system components e.g., CoreDNS, kube-proxy, network plugins
+
+3. kube-public - contains resources that should be publicly accessible across the cluster
+
+4. kube-node-lease - stores node lease objects used by nodes to send heartbeats to the control plane. this helps Kubernetes detect node failures efficiently.
+
+**Question: command for viewing all namespaces??**
+
+```bash
+kubectl get namespaces
+```
+
+OR
+
+```bash
+kubectl get ns
+```
+
+**Question: command for creating a namespace??**
+
+```bash
+kubectl get ns
+```
+
+**Question: deploying into a namespace??**
+
+```bash
+kubectl create deployment nginx \
+    --image=nginx \
+    -n dev
+```
+- NB: the -n flag specifies the namespace
+
+**Question: viewing resources in a namespace??**
+
+1. view pods in dev
+
+```bash
+kubectl get pods -n dev
+```
+
+2. view deployments in dev
+
+```bash
+kubectl get deployments -n dev
+```
+
+**Question: what do namespaces provide??**
+- organization of cluster resources
+- isolation between teams and environments
+- resource quota enforcement
+- access control through RBAC
+
+> Namespaces provide logical isolation, but all namespaces still share the same cluster. 
+
 ---
 
-**Question: what is a Pod??
+**Question: what is kernel namespaces??**
+- a kernel namespace is a Linux kernel feature that provides isolation between processes by giving them their own view of certain system resources.
+
+**Types of Linux Namespaces**
+
+1. PID Namespace - isolates process IDs
+
+2. Network Namespace - provides isolated networking. each container gets its own IP address, routing table, network interfaces, and port space
+
+3. Mount Namespace - isolates filesystem mount points e.g.,:
+
+- container A
+
+```text
+/
+├── app
+└── logs
+```
+
+- container B
+
+```text
+/
+├── nginx
+└── html
+```
+
+4. UTS Namespace - UTS (Unix Time-sharing System) isolates hostname and domain name.
+
+5. IPC Namespace - IPC (Inter-Process Communication) isolates shared memory, message queues, and semaphores.
+
+6. User Namespace - maps users inside a container to different users on the host. 
+
+7. Cgroup Namespace - works with Linux control groups (cgroups) and it provides visibility only into the container's resource limits.
+
+
+**Question: why are kernel namespaces important for containers??**
+- they provide isolation, making containers appear as independent systems
+
+**Question: what is the difference between namespaces and cgroups??**
+- namespaces provide isolation, while cgroups provide resource control.
+---
+
+
+**Question: what is a Pod??**
 - a Pod is the smallest scheduling work unit in Kubernetes.
     - it is a logical collection of one or more containers scheduled together, and the collection can be started, stopped or rescheduled as a single unit of work.
 
