@@ -33,14 +33,26 @@
     **Question: which only component can talk directly to the key-value store??**
         - API sever
 
+**Admission Controllers**
+- these are built-in models that enforce cluster-wide policies before requests persist into the cluster's datastore. for example:
+
+1. LimitRanger controller - enforces resource usage limits on Pods and Containers.
+2. NamespaceLifecycle controller - prevents creation of objects in non-existent or terminating namespaces.
+3. PodSecurity controller - ensures that Pods comply with the cluster's defined standards.
+
 
 **Question: what is the function of the scheduler??**
 - assigns new workload objects as pods encapsulating containers, to nodes (typically worker nodes).
 - responsible for gathering the cluster data (Quality of Service (QoS) requirements, data locality, anti-affinity etc).
 
+- two phases for schedulign process: filtering phase & scoring phase
+
+    - pod affinity improves performance and reduces latency
+    - anti-affinity increases fault tolerance
+    - taints & tolerations...
 
 **Question: what is the function of controller managers??**
-- responsible for running controllers or operator processes to regulate the state of the K8s cluster.
+- responsible for running controllers or operator processes to regulate the state of the Kubernetes cluster.
 - kube-controller-manager runs controllers or operators responsible to act when nodes become unavailable to ensure container pod counts are expected to create endpoints, service accounts, and API access tokens.
 - also runs controllers or operators responsible for interacting with a cloud provider's underlying infrastructure.
 
@@ -55,8 +67,21 @@
 
 - NOTE: etcd is used to store configuration details (such as subnets, ConfigMaps, Secrets etc).
 
+- etcd stores data in simple hierarchical structure using key-value pairs. each key represents a Kubernetes object or configuration path, and the corresponding value contains the serialised data in JSON or Protocol Buffers format.
+
+```text
+Key:
+/registry/pods/default/nginx
+
+Value:
+Pod configuration
+```
+
 **Question: which of the control plane components is able to communicate directly with the etcd data store??**
 - API Server
+
+**Question: why are other components of the control plane not allowed to interact with the etcd??**
+- to ensure data integrity, consistency, and security. 
 
 ---
 
@@ -80,11 +105,16 @@
 3. kubelet - CRI shims
 4. Proxy (kube-proxy)
 
-- **container runtime** is responsible for running containers on the worker node e.g., containerd
+- **container runtime** is responsible for running containers on the worker node e.g., containerd, CRI-O, Docker (via cri-dockerd)
+    - container runtime communicates with kubelet using the Container Runtime Interface (CRI)
+
+    **Question: what is Container Runtime Interface (CRI)??**
+    - is it the standardised gRPC-based protocol that enables Kubernetes to support multiple runtimes without modifications. 
 
 - **kubelet** is a small agent that runs on every worker node in the cluster. the kubelet talks to the api-server and container runtime to handle the final stage of starting containers.
 
 - **kube-proxy** is a network proxy that handles inside and outside communication of the cluster. instead of managing traffic flow on its own, the kube-proxy tries to rely on the networking capabilities of underlying operating system.
+    - kube-proxy handles **TCP, UDP, and SCTP traffic and uses the OS's networking layer such as iptables, ipvs, or nftables on Linux to manage and enforce packet forwarding rules**. 
 
 ---
 
@@ -95,7 +125,6 @@
 
 **Question: where are application containers encapsulated in Kubernetes??**
 - Pods
-
 
 ---
 
@@ -216,6 +245,12 @@ kubectl get deployments -n dev
 
 **Question: what is the difference between namespaces and cgroups??**
 - namespaces provide isolation, while cgroups provide resource control.
+---
+
+**authentication services** e.g., accounts, client certificates or bearer tokens
+
+**authorisation** e.g., RBAC, webhook-based authorization.
+
 ---
 
 
