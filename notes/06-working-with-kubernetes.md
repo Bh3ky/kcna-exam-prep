@@ -326,3 +326,10 @@ Kubernetes → runs Pods → Pods run containers
     - HashiCorp Vault, AWS Secret Manager, and Google Secret Manager
 
 ---
+
+## Autoscaling Objects
+
+**Question: what are the mechanisms supported by Kubernetes for auto-scaling workloads??**
+1. horizontal Pod autoscaler (HPA)
+2. cluster autoscaler
+3. vertical Pod autoscaler

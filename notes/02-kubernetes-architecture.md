@@ -282,7 +282,7 @@ kubectl get deployments -n dev
 ---
 
 **Question: what is the function of node agent (kubelet)??**
-- ensures that containers assignee to the node run correctly. 
+- ensures that containers assigned to the node run correctly. 
 - it communicates with the Control Plane (watches the Kubernetes API server for Pod specifications that have been assigned to its node).
 - starts and manages Pods
 - monitors container health
@@ -524,7 +524,7 @@ the right number of Pods exist).
 **Question: which Kubernetes resource provides a mechanism for grouping API objects and providing a scope for names??**
 - Namespaces create logical partitions within a cluster, allowing teams or applications to operate independently. Resource names must be unique within a Namespace, but not necessarily across the entire cluster. 
 
-**Question: when interacting with the Kubernetes API server using kubectl,what is the typical format used for defining resource manifests??**
+**Question: when interacting with the Kubernetes API server using kubectl, what is the typical format used for defining resource manifests??**
 - while the API server can accept JSON, YAML is the overwhelmingly conventional and human-readable format used in configuration files (manifests) passed to kubectl for creating or updating resources.
 
 **Question: what core Kubernetes concept allows Deployments to perform rolling updates with zero downtime??**
@@ -536,4 +536,4 @@ the right number of Pods exist).
 **Question: how does Kubernetes typically handle the failure of a container within a Pod??**
 -  The kubelet monitors container health. If a container fails, the kubelet restarts it according to the Pod’s restartPolicy (Always, OnFailure, Never). The Pod itself continues to exist on the same node.
 
-**Question: 
+--- 
