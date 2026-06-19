@@ -201,3 +201,60 @@ Kubernetes → runs Pods → Pods run containers
 - NB: Kubernetes ensures that missed executions due to downtime are handled gracefully, making CronJobs an essential component for time-sensitive automation. 
 
 ---
+
+## Networking Objects
+
+**Question: what is a Service??**
+- a Service exposes one or more Pods as a network endpoint.
+
+- types:
+
+1. ClusterIP - is the default service which creates a virtual IP inside the cluster that acts as a single connection point for a group of Pods, often used for internal round-robin load balancing. 
+
+2. NodePort - allows basic external traffic to reach the cluster through any node. the NodePort service type builds on ClusterIP by opening port on every node and mapping it to the Service.
+
+3. LoadBalancer - service type that extends NodePort by provisioning an external load balancer. OR  a Service type that exposes an application externally and distributes incoming traffic across the Pods behind the Service.
+
+4. ExternalName - is a special Service type that has no routing whatsoever. it creates a DNS alias rather than routing traffic. the Service maps a name inside the cluster to an external hostname, which is useful when internal workloads need to access external services without handling complex DNS names.
+
+
+**Question: what is a headless Service??**
+- a headless Service allows applications to handle services discovery independently rather than relying on Kubernetes' built-in mechanisms
+
+**Question: how do we create a headless Service??**
+- setting `.spec.clusterIP = None`
+
+
+**Ingress**
+- an Ingress is a Kubernetes API object that manages **HTTP and HTTPS traffic into the cluster**, providing **Layer 7 (application layer) routing** to Services. 
+- use of routing rules which are enforced by an Ingress Controller, which implements the actaul networking logic.
+
+**Question: what are the features of ingress controller??**
+- LoadBalancing
+- TLS offloading or termination
+- Name-based virtual hosting
+- Path-based routing
+
+---
+
+## Kubernetes Service Exposure: Ingress API vs Gateway API
+
+
+**Question: what is the difference between Ingress API and Gateway API??**
+- Ingress API provides simple HTTP/HPTTPS routing through a single resource, whereas Gateway API provides a richer, more extensible framework with separate resources for gateway and routes, enabling advanced traffic management and clear separation of responsibilities.
+
+---
+
+## NetworkPolicy
+
+- NetworkPolicy i a simple IP firewall (OSI Layer 3 or 4) that control traffic based on rules
+
+**Question: what is a Kubernetes NetworkPolicy??**
+- it is a declarative resource that defines how Pods are allowed to communicate with each other and with external endpoints inside and outside a cluster.
+    - acts as a pod-level firewall, enforcing fine-grained network access control in line with zero-trust security principles. 
+
+**Question: why do we have to implement NetworkPolicy??**
+- provides benefits such as least-priviledge, networking, and also limits the attack surface
+- also make it possible to secure multi-tenant or production-grade Kubernetes clusters thereby promoting in-depth defense and compliance
+
+---
