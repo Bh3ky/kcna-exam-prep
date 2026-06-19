@@ -258,3 +258,50 @@ Kubernetes → runs Pods → Pods run containers
 - also make it possible to secure multi-tenant or production-grade Kubernetes clusters thereby promoting in-depth defense and compliance
 
 ---
+
+## Volume & Storage Objects
+
+- volumes allow data to be shared both between multiple containers in the same Pod and depending on configuration, between Pod across the cluster.
+- volumes help prevent data loss when a Pod restarts on the same node.
+
+**Question: what is Container Storage Interface (CSI) ??**
+- allows vendors to supply storage drivers as plugins
+
+1. PersistentVolumes (PV)
+- represents a piece of storage in the cluster that has been provisioned by an administrator (static provisioning) or dynamically through a StorageClass (an API object that lets administrators define and abstract the underlying storage provided to an application). 
+- key properties of PV object:
+    - capacity e.g., 10Gi
+    - access modes RWO, ROX, RWX
+    - volume mode
+    - reclaim policy i.e., retain, delete, and recycle
+    - storage backend information
+    - node affinity
+
+- a PersistentVolume's lifecycle is independent of any individual Pod that uses it i.e., the data stored persists even if the Pods using it gets deleted or rescheduled e.g., PV (NFS-based).
+
+2. PersistentVolumeClaims (PVC)
+- is a user's request for storage. it is similar to how a Pod requests CPU and memory.
+- it allows developers to specify the amount of storage, access mode, and optionally StorageClass that describe the type or performance tier of the desired storage.
+- how it works??
+    - when a PVC is created, Kubernetes looks for an available PV that matches its request (based on size, access mode, and storage class). if such a PV exists, it is bound to the new PVC. if not, and if a StorageClass is defined, Kubernetes dynamically provisions a new PV that satisfies the claim. once bound, the PV is dedicated exclusively to that PVC until it is released.
+
+**Question: what is a StorageClass??**
+- StorageClass defines how dynamic volume provisioning works within a cluster.
+
+- allows us to automatically provision PVs on demand when a PVC is created. benefits?? scalability and reduction in manual intervention.
+
+***Question: list the details included in each StorageClass??**
+1. provisioner - which is the driver or plugin that actually creates the volumes
+2. parameters - which are key-value pairs that define characteristics such as storage type, performance level or filesystem.
+3. reclaim policy - determines what happens to a volume after the PVC is deleted [retain, delete, or recycle]
+4. volume binding mode - controls when the volume is provisioned and bound ( `Immediate` or `WaitForFirstConsumer`). 
+
+
+**Question: describe the dynamic provisioning flow??**
+1. user creates a StorageClass (defines "how" to provision storage)
+2. user creates a PVC referencing that StorageClass
+3. Kubernetes dynamically provisions a PV using the parameters and binds it to the PVC
+4. the Pod mounts the PVC and uses the volume
+5. when the PVC is deleted, the PV is handled according to the reclaim policy.
+
+---
