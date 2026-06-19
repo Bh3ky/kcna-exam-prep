@@ -138,3 +138,66 @@ Kubernetes → runs Pods → Pods run containers
 - NOTE: a Pod typically starts in the **Pending** phase, transitions to **Running** once its containers start successfully, and eventually ends in either **Succeeded or Failed**, depending on how its containers terminate.
 
 ---
+
+## Workload Objects
+
+- to ensure that a specific number of Pod replicas are always running, Kubernetes uses **controller objects** to manage Pods on its behalf.
+
+**Workload controllers**
+1. ReplicaSet & ReplicaSets - handles stateless, scalable applications
+2. StatefulSets - manage persistent ordered workloads
+3. DaemonSets - ensure node-level services
+4. Jobs & CronJobs - automate finite or periodic tasks together forming foundation of reliable, automated workload orchestration in Kubernetes.
+
+
+## Kubernetes Objects
+
+1. ReplicaSet
+
+**Question: what is a ReplicaSet??**
+- it is a Kubernetes controller that maintains a stable set of identical Pods at any given time.
+- primary function = ensuring that specified number of Pod replicas defined in the `replicas` field are always active. 
+
+- ideal for **high availability and horizontal scaling of stateless workloads**. 
+- NB: managed indirectly through higher-level controllers like Deployments (which handle versioning and updates).
+
+2. Deployment
+
+**Question: what is the functionality of Deployment??**
+- it manages the full lifecycle or stateless applications, providing declarative updates to Pods and ReplicaSets
+- it automatically creates a new ReplicaSet when an applicatio is updated. also replaces old Pods with new ones while **ensuring zero downtime**.
+- also, rolls back to previous stable versions if errors are introduced during updates.
+    - NB: very ideal for microservices, APIs, and web applications that require seamless updates,scaling, and rollback.
+
+3. StatefulSet
+
+**Question: what is the purpose of StatefulSet??**
+- it is designed for managing stateful applications that require stable identities, persistent storage, and predictable Pod ordering.
+-  also assigns each Pod a unique, persistent identifier such as `web-0` and ensures that the same identity is retained even if the Pod is rescheduled. why?? allow applications such as databases, message queues, and distributed storage systems to maintain consistent data relationships. 
+- works closely with PersistentVolumeClaims (PVCs) to provide durable storage that persists across Pod restarts.
+- scaling and updates occur sequentially ensuring orderly startup, shutdown, and version transitions, crucial for workloads like PostgreSQL, Cassandra, or Kafka.
+
+4. DaemonSet
+
+**Question: what is the functionality of DaemonSet??**
+- it ensures that a specific Pod runs on every node (or on a subset of nodes labeled with a particular label) in a Kubernetes cluster.
+- as new nodes are added, the DaemonSet automatically schedules the required Pods onto them; when nodes are removed, the Pods are cleaned up
+- this controller is ideal for infra-level workloads that must run globally such as log collection agents e.g., Fluentd or Filebeat, monitoring tools e.g, Prometheus Node Exporter, or networking components e.g., Cilium or Calico. 
+- NB: DaemonSet guarantee consistent background services across the cluster, ensuring that each node participates in monitoring, security, or data collection uniformly. 
+
+5. Job
+
+- Kubernetee controller designed to run finite, one-time tasks to completion. 
+    - creates one or more Pods to perform a specific operation such as data processing, database migration or maintainance scripts, and ensures that tasks run successfully at least once.
+    - when the Pod complete successfully, the Job is marked as finished and doesn't restart unless configured to retry on failure.
+- jobs are useful for batch operations, where the taks is not long-running but still requires reliability and completion tracking
+
+6. CronJob
+
+- extend the Job concept by adding time-based scheduling, which is similar to Linux cron utility.
+    - allows administrators and developers to run Jobs periodically according to a defined schedule
+- CronJobs are ideal for recurring tasks such as automated backups, report generation, data synchronization or log cleanup.
+- each scheduled execution creates a new job, which in turn manages the Pods responsible for completing the task.
+- NB: Kubernetes ensures that missed executions due to downtime are handled gracefully, making CronJobs an essential component for time-sensitive automation. 
+
+---
