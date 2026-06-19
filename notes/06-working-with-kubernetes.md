@@ -92,4 +92,49 @@ Worker Nodes
 
 ---
 
+## Pod
 
+**Question: what is a Pod??
+- a Pod is the smallest deployable unit in Kubernetes.
+OR
+- basically it is one or more containers grouped together as a single sharing the same network and storage.
+
+- workflow
+
+```text
+Kubernetes → runs Pods → Pods run containers
+```
+
+**Question: how do containers communicate inside a Pod??**
+- since the containers share the same IP address, they communicate over localhost.
+
+**Question: how do containers inside a Pod share storage??**
+- through a common filesystem
+
+- NOTE: Pods are not permanent. a Pod scales as a unit thus containers inside it cannot be scaled independently. 
+
+**Question: what is a sidecar container??**
+- it is a container that provides supporting functionality to the primary application. 
+
+- `initContainers` - used to run certain processes before the main application starts. the containers will run sequentially and must complete successfully before the main application containers begin. 
+
+**Question: what settings are used to customise containers inside Pods??**
+1. resources- define the CPU and memory requests and limits, which ensures proper scheduling and prevents a container from consuming more resources than allowed.
+2. livenessProbe - configures health checks to verify that the application is still running; if a probe fails, Kubernetes can automatically restart the container.
+3. securityContext - specifies security settings such as user and group IDs, filesystem permissions, and kernel capabilities. 
+
+---
+
+## Pod Lifecycle
+
+**Question: describe the lifecycle phases of the Pods??**
+1. pending - phase which includes time spend waiting for scheduling and downloading container images.
+2. running - the Pod is now assigned to a node, and all of its containers have been created. at least one container is still running or is in the process of starting or restarting.
+3. succeeded - all containers in the pod have exited successfully and will not be restarted
+4. failed - all containers have stopped, and at least one exited with a non-zero exit code or was terminated by the system.
+5. unknown - the pod's state cannot be retrieved, typically due to communication issues with the node where the pod is scheduled.
+
+
+- NOTE: a Pod typically starts in the **Pending** phase, transitions to **Running** once its containers start successfully, and eventually ends in either **Succeeded or Failed**, depending on how its containers terminate.
+
+---
