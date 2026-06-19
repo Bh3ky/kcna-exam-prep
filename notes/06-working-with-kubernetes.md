@@ -305,3 +305,24 @@ Kubernetes → runs Pods → Pods run containers
 5. when the PVC is deleted, the PV is handled according to the reclaim policy.
 
 ---
+
+## Configuration Objects
+
+**Question: what are configuration objects??**
+- configuration objects are Kubernetes resources used to store configuration data separately from the application code or container image. 
+
+**Question: what are ConfigMaps??**
+- ConfigMaps let's store configuration as key-value pairs or full configuration files independent of the Pods.
+
+**Question: what are the two ways of consuming ConfigMaps??**
+1. mounting as files inside a Pod using a volume
+2. mapping to environment variables that the container can read at run time
+
+**Question: what are Secrets??**
+- these are built-in objects for storing sensitive values such as passwords, API keys, and authentication credentials
+    - secrets are stored in an encoded format to prevent accidental exposure.
+
+- examples of secret-management systems:
+    - HashiCorp Vault, AWS Secret Manager, and Google Secret Manager
+
+---
