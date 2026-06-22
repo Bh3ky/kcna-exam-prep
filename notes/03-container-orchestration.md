@@ -530,3 +530,4 @@ Container
 - role / clusterrole
     - A Role (namespace-scoped) or ClusterRole (cluster-scoped) contains rules that represent a set of permissions on resources.
 
+---
